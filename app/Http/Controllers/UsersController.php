@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 class UsersController extends Controller
 {
@@ -40,7 +41,17 @@ class UsersController extends Controller
          return response($response);
         
     }
+    public function redirectToProvider()
+    {
+        return Socialite::driver('google')->redirect();
+    }
 
+    public function handleProviderCallback()
+    {
+        $user = Socialite::driver('google')->user();
+
+        // $user->token;
+    }
     public function logout(Request $request){
         $request->user()->currentAccessToken()->delete();
 
